@@ -44,24 +44,55 @@ $(document).ready(function() {
 	}
 	
 	//Now call the shuffle function and save the result of what shuffle returns into your deck variable
-	
+	deck = shuffle(deck);
+
 	var cards_player_1 = [];
 	var cards_player_2 = [];
 	// write a function called deal that will evently divide the deck up between the two players
-	
-	
-	//create a function (algorithm) called "war" that takes two cards as parameters, compares them and returns a winner. A tie should return false.
-	var war = function(){
-	
-		
+	var deal = function(deck) {
+		for (var i = 0; i < deck.length; i++) {
+			if (i % 2 === 0) {
+				cards_player_1.push(deck[i]);
+			}
+			else {
+				cards_player_2.push(deck[i]);
+			}
+		}
 	}
-	
+	deal(deck);
+
+	//create a function (algorithm) called "war" that takes two cards as parameters, compares them and returns a winner. A tie should return false.
+	var war = function(card1, card2){
+		if (card1.number > card2.number) {
+			return 'player1';
+		}
+		else if (card1.number < card2.number) {
+			return 'player2';
+		}
+		else {
+			return false;
+		}
+		
+	};
 	
 	//create a play function
 		//compare the cards
 		//give the winner both cards (at end of deck)
 	var play = function(){
+		var card1 = cards_player_1.shift();
+		var card2 = cards_player_2.shift();
+		var winner = war(card1, card2);
 		
+		if (winner === "player1") {
+			cards_player_1.push(card1, card2);
+		}
+		else if (winner === "player2") {
+			cards_player_2.push(card1, card2);
+		}
+		else {
+			cards_player_1.push(card1);
+			cards_player_2.push(card2);
+		}
 		//this function (defined below) will continue to the next turn
 		advance();
 	}
@@ -80,6 +111,7 @@ $(document).ready(function() {
 	}
 	advance();
 	
+	//don't touch this.
 	$(".btn").click(function() {
 		play();
 	});
